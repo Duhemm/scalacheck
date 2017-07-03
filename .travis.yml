@@ -23,15 +23,14 @@ env:
     - secure: PwIb1un8vuuyoidnjHaKO81FD49n5ZTVEnf6hVKkMRe3hipr+WGWv19m92yE/n34ROFo1BM9DmfYxaexlE0pI2o/a5MV1i3kNSwUk+Yt8uU6F4+nyQKROQUe76UtAtXmsYgLqXaWSW0+EVidMyhSktkXXxiU5wCGLdKkPu3Vj9w=
     - secure: KeZRD91oE4UzwhSJfjllkwNXnerDGQJSIOuRLVtbLCq0JJnAfj6B7fvI2KyZqQwuhYrUyYOSbSLd6BAi75bBYMb3D1yNdyPA5gHDg5aj96ALojrOuU60+/dOQ0Rg6Pf2UiTlFAXzz1mud8+Q3svaeKX4JDVxj329T3ReBspjyBY=
   matrix:
-    - PLATFORM=jvm SBT_PARALLEL=true  WORKERS=1 DEPLOY=true
-    - PLATFORM=jvm SBT_PARALLEL=true  WORKERS=4 DEPLOY=false
-    - PLATFORM=jvm SBT_PARALLEL=false WORKERS=4 DEPLOY=false
-    - PLATFORM=js  SBT_PARALLEL=true  WORKERS=1 DEPLOY=true
-  matrix:
     include:
       - scala: 2.11.11
         before_script:
           - curl https://raw.githubusercontent.com/scala-native/scala-native/v0.3.0/bin/travis_setup.sh | bash -x
         sudo: required
-        env: PLATFORM=native SBT_PARALLEL=true DEPLOY=true
+        env: PLATFORM=native SBT_PARALLEL=true  WORKERS=1 DEPLOY=true
+      - env: PLATFORM=jvm    SBT_PARALLEL=true  WORKERS=1 DEPLOY=true
+      - env: PLATFORM=jvm    SBT_PARALLEL=true  WORKERS=4 DEPLOY=false
+      - env: PLATFORM=jvm    SBT_PARALLEL=false WORKERS=4 DEPLOY=false
+      - env: PLATFORM=js     SBT_PARALLEL=true  WORKERS=1 DEPLOY=true
 sudo: false
