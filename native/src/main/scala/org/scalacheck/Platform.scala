@@ -11,6 +11,8 @@ package org.scalacheck
 
 import Test._
 
+import scala.scalanative.testinterface.PreloadedClassLoader
+
 private[scalacheck] object Platform {
 
   def runWorkers(
@@ -22,10 +24,10 @@ private[scalacheck] object Platform {
   }
 
   def loadModule(name: String, loader: ClassLoader): AnyRef =
-    org.scalajs.testinterface.TestUtils.loadModule(name, loader)
+    loader.asInstanceOf[PreloadedClassLoader].loadPreloaded(name)
 
-  def newInstance(name: String, loader: ClassLoader)(args: Seq[AnyRef]): AnyRef =
-    org.scalajs.testinterface.TestUtils.newInstance(name, loader)(args)
+  def newInstance(name: String, loader: ClassLoader, paramTypes: Seq[Class[_]])(args: Seq[AnyRef]): AnyRef =
+    org.scalajs.testinterface.TestUtils.newInstance(name, loader, paramTypes)(args)
 
   // We don't need those annotation in Native, and they have been deprecated.
   // We use `String` instead of the definition in Native because `-Xfatal-warnings`
